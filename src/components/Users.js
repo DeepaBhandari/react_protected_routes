@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react"
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { useNavigation, useLocation } from "react-router-dom";
 
 const Users = () => {
     const [users, setUsers] = useState();
     const axiosPrivate = useAxiosPrivate();
+    const navigate = useNavigation();
+    const location = useLocation();
 
     useEffect(() => {
         let isMounted = true;
@@ -15,7 +18,10 @@ const Users = () => {
                 })
                 console.log(response.data);
                 isMounted && setUsers(response.data);
-            } catch (e) { console.log(e) }
+            } catch (e) {
+                console.log(e);
+                navigate("/login", { state: { from: location }, replace: true })
+            }
         }
         getUsers();
         // useeffect cleanup function
